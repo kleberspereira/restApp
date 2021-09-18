@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: restapp-app
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ../src:/var/www
+    build:
+      context: ./
+      dockerfile: Dockerfile
+
+  nginx:
+    image: nginx:1.19-alpine
+    container_name: restapp-nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ../src:/var/www
+      - ../nginx:/etc/nginx/conf.d
+      
+  php:
+    image: php:8.0.2-fpm
+    container_name: restapp-php
+    restart: always
+    build:
+      context: ./
